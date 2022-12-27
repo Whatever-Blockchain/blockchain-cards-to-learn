@@ -1,41 +1,41 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
-    width: 100%;
-    height: 50px;
-    background-color: white;
+  width: 100%;
+  height: 50px;
+  background-color: white;
 
-    position: sticky;
-    top: 0;
-    z-index: 999;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 `;
 
 export const TopBarWrapper = styled.div`
-    height: 100%;
-    padding: 0px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  height: 100%;
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const Logo = styled.span`
-    font-weight: bold;
-    font-size: 30px;
-    color: black;
-    cursor: pointer;
+  font-weight: bold;
+  font-size: 30px;
+  color: black;
+  cursor: pointer;
 `;
 
 export const TopRight = styled.div`
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 `;
 
 export const TopLeft = styled.div``;
 
 export const TopbarIconContainer = styled.div`
-    position: relative;
-    margin-right: 15px;
-    color: #555;
+  position: relative;
+  margin-right: 15px;
+  color: #555;
 `;
 
 /**
