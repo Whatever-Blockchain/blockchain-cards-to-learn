@@ -54,9 +54,9 @@ function AccountDetail() {
         variant="contained"
         onClick={getAccountInfo}
       >
-        get Account Info
+        button
       </Button>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         <p>
           data btye length:{" "}
           <b>

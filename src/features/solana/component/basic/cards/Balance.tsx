@@ -71,12 +71,14 @@ function Balance() {
         variant="contained"
         onClick={airdrop}
       >
-        airdrop
+        button
       </Button>
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">{balance == null ? 0 : balance}</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">{balance == null ? 0 : balance}</span>
       </div>
-      <span className="featuredSub">{signerWallet.publicKey.toString()}</span>
+      <span className="featuredSubContent">
+        {signerWallet.publicKey.toString()}
+      </span>
     </div>
   );
 }

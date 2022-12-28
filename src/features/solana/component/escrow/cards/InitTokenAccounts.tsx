@@ -225,36 +225,36 @@ function InitTokenAccounts({ escrowTool }: EscrowToolBox) {
       >
         button
       </Button>
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">initializerTokenAccountA</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">initializerTokenAccountA</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {initializerTokenAccountAPubkey == null
           ? 0
           : initializerTokenAccountAPubkey.toString()}
       </span>
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">initializerTokenAccountB</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">initializerTokenAccountB</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {initializerTokenAccountBPubkey == null
           ? 0
           : initializerTokenAccountBPubkey.toString()}
       </span>
 
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">takerTokenAccountA</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">takerTokenAccountA</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {takerTokenAccountAPubkey == null
           ? 0
           : takerTokenAccountAPubkey.toString()}
       </span>
 
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">takerTokenAccountB</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">takerTokenAccountB</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {takerTokenAccountBPubkey == null
           ? 0
           : takerTokenAccountBPubkey.toString()}

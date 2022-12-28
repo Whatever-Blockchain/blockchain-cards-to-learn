@@ -86,28 +86,28 @@ function InitMintTo({ escrowTool }: EscrowToolBox) {
       >
         button
       </Button>
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">
+      <div className="featuredContentContainer">
+        <span className="featuredContent">
           Balance of Initializer Token Account A :{" "}
           {initializerTokenAccountABalance == null
             ? 0
             : initializerTokenAccountABalance.amount}
         </span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {escrowTool.initializerTokenAccountA == null
           ? 0
           : escrowTool.initializerTokenAccountA.toString()}
       </span>
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">
+      <div className="featuredContentContainer">
+        <span className="featuredContent">
           Balance of Initializer Token Account B :{" "}
           {takerTokenAccountBBalance == null
             ? 0
             : takerTokenAccountBBalance.amount}
         </span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {escrowTool.takerTokenAccountB == null
           ? 0
           : escrowTool.takerTokenAccountB.toString()}

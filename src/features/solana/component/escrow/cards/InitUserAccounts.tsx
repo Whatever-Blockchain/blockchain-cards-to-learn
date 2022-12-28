@@ -80,22 +80,22 @@ function InitUserAccounts({ escrowTool }: EscrowToolBox) {
       >
         button
       </Button>
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">
+      <div className="featuredContentContainer">
+        <span className="featuredContent">
           Initializer : {initializerSol == null ? 0 : initializerSol}
         </span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {initializerMainAccount == null
           ? 0
           : initializerMainAccount.publicKey.toString()}
       </span>
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">
+      <div className="featuredContentContainer">
+        <span className="featuredContent">
           Taker : {takerSol == null ? 0 : takerSol}
         </span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {takerMainAccount == null ? 0 : takerMainAccount.publicKey.toString()}
       </span>
     </div>
