@@ -71,14 +71,14 @@ function RentExempt() {
         variant="contained"
         onClick={createNewAccount}
       >
-        minimal rent exempt
+        button
       </Button>
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">
+      <div className="featuredContentContainer">
+        <span className="featuredContent">
           {rentExempt == null ? 0 : rentExempt.toString()}
         </span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         <TextField
           fullWidth
           size="small"

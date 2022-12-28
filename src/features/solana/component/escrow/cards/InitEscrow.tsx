@@ -159,58 +159,58 @@ function InitEscrow({ escrowTool }: EscrowToolBox) {
       >
         button
       </Button>
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">Vault Address</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">Vault Address</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {vaultAddress == null ? 0 : vaultAddress.toString()}
       </span>
 
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">Vault Owner</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">Vault Owner</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {vaultOwner == null ? 0 : vaultOwner.toString()}
       </span>
 
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">InitializerKey</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">InitializerKey</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {escrowInitializerKey == null ? 0 : escrowInitializerKey.toString()}
       </span>
 
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">initializerDepositTokenAccount</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">initializerDepositTokenAccount</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {escrowInitializerDepositTokenAccount == null
           ? 0
           : escrowInitializerDepositTokenAccount.toString()}
       </span>
 
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">initializerReceiveTokenAccount</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">initializerReceiveTokenAccount</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {escrowInitializerReceiveTokenAccount == null
           ? 0
           : escrowInitializerReceiveTokenAccount.toString()}
       </span>
 
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney"> initializerAmount</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent"> initializerAmount</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {escrowinitializerAmount == null
           ? 0
           : escrowinitializerAmount.toString()}
       </span>
 
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">takerAmount</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">takerAmount</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {escrowtakerAmount == null ? 0 : escrowtakerAmount.toString()}
       </span>
     </div>

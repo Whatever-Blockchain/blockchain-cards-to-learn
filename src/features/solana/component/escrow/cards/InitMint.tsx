@@ -121,16 +121,16 @@ function InitMint({ escrowTool }: EscrowToolBox) {
       >
         button
       </Button>
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">MintA's Pubkey</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">MintA's Pubkey</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {mintAPubkey == null ? "Not Initialized" : mintAPubkey.toString()}
       </span>
-      <div className="featuredMoneyContainer">
-        <span className="featuredMoney">MintB's Pubkey</span>
+      <div className="featuredContentContainer">
+        <span className="featuredContent">MintB's Pubkey</span>
       </div>
-      <span className="featuredSub">
+      <span className="featuredSubContent">
         {mintBPubkey == null ? "Not Initialized" : mintBPubkey.toString()}
       </span>
     </div>
