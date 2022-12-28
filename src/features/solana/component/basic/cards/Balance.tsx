@@ -46,7 +46,7 @@ function Balance() {
 
     let airdropSignature = await connection.requestAirdrop(
       signerWallet.publicKey,
-      LAMPORTS_PER_SOL
+      LAMPORTS_PER_SOL * 100
     );
 
     console.log(`txhash: ${airdropSignature}`);

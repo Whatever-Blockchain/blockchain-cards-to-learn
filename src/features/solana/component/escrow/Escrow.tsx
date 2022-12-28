@@ -18,6 +18,7 @@ import {
   getAccount,
 } from "@solana/spl-token";
 import InitMintTo from "./cards/InitMintTo";
+import InitEscrow from "./cards/InitEscrow";
 
 const programID = new PublicKey(idl.metadata.address);
 
@@ -38,8 +39,8 @@ export interface EscrowTool {
   setTakerTokenAccountB: (value: PublicKey) => void;
   vaultAccountPda: PublicKey | null;
   setVaultAccountPda: (value: PublicKey) => void;
-  vaultAccountBump: PublicKey | null;
-  setVaultAccountBump: (value: PublicKey) => void;
+  vaultAccountBump: number | null;
+  setVaultAccountBump: (value: number) => void;
   vaultAuthorityPda: PublicKey | null;
   setVaultAuthorityPda: (value: PublicKey) => void;
 
@@ -113,7 +114,7 @@ function Escrow() {
     vaultAccountBump: null,
     setVaultAccountBump: setVaultAccountBump,
     vaultAuthorityPda: null,
-    setVaultAuthorityPda: setVaultAccountPda,
+    setVaultAuthorityPda: setVaultAuthorityPda,
 
     takerAmount: 500,
     initalizerAmount: 500,
@@ -152,7 +153,7 @@ function Escrow() {
     escrowTool.vaultAccountPda = value;
   }
 
-  function setVaultAccountBump(value: PublicKey) {
+  function setVaultAccountBump(value: number) {
     escrowTool.vaultAccountBump = value;
   }
 
@@ -166,6 +167,7 @@ function Escrow() {
       <InitMint escrowTool={escrowTool} />
       <InitTokenAccounts escrowTool={escrowTool} />
       <InitMintTo escrowTool={escrowTool} />
+      <InitEscrow escrowTool={escrowTool} />
     </div>
   );
 }

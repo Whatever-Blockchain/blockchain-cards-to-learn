@@ -3,9 +3,9 @@ import * as anchor from "@project-serum/anchor";
 import { Button, Grid } from "@mui/material";
 
 import * as token from "@solana/spl-token";
-import { EscrowTool } from "../Escrow";
 import * as web3 from "@solana/web3.js";
-import { PublicKey, Transaction } from "@solana/web3.js";
+
+import { EscrowTool } from "../Escrow";
 
 interface EscrowToolBox {
   escrowTool: EscrowTool;
