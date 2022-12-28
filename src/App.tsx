@@ -15,7 +15,6 @@ function App() {
         <div className="container">
           <SideBar />
           <Routers />
-          {/* <SolanaBoard /> */}
         </div>
       </div>
     </Router>
