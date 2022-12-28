@@ -3,7 +3,7 @@ import * as anchor from "@project-serum/anchor";
 import * as web3 from "@solana/web3.js";
 import * as token from "@solana/spl-token";
 
-import { Button } from "@mui/material";
+import { Button, toolbarClasses } from "@mui/material";
 
 import { EscrowTool } from "../Escrow";
 import assert from "assert";
@@ -15,6 +15,19 @@ interface EscrowToolBox {
 function InitEscrow({ escrowTool }: EscrowToolBox) {
   const [vaultAddress, setVaultAddress] = useState<web3.PublicKey>();
   const [vaultOwner, setVaultOwner] = useState<web3.PublicKey>();
+  const [escrowInitializerKey, setEscrowInitializerKey] =
+    useState<web3.PublicKey>();
+  const [
+    escrowInitializerDepositTokenAccount,
+    setEscrowInitializerDepositTokenAccount,
+  ] = useState<web3.PublicKey>();
+  const [
+    escrowInitializerReceiveTokenAccount,
+    setEscrowInitializerReceiveTokenAccount,
+  ] = useState<web3.PublicKey>();
+  const [escrowinitializerAmount, setEscrowInitializerAmount] =
+    useState<Number>();
+  const [escrowtakerAmount, setEscrowTakerAmount] = useState<Number>();
 
   const provider = escrowTool.provider;
   const program = escrowTool.program;
@@ -38,10 +51,6 @@ function InitEscrow({ escrowTool }: EscrowToolBox) {
       );
     escrowTool.setVaultAuthorityPda(_vault_authority_pda);
 
-    console.log(
-      "escrowAccount : " + escrowTool.escrowAccount.publicKey.toString()
-    );
-
     if (
       escrowTool.mintA &&
       escrowTool.initializerTokenAccountA &&
@@ -54,8 +63,6 @@ function InitEscrow({ escrowTool }: EscrowToolBox) {
         escrowTool.vaultAccountBump &&
         escrowTool.vaultAuthorityPda
       ) {
-        console.log("initialize start");
-
         let _vault = await token.getAccount(
           provider.connection,
           escrowTool.vaultAccountPda
@@ -65,6 +72,21 @@ function InitEscrow({ escrowTool }: EscrowToolBox) {
           // vault가 이미 존재하고 owner로 vaultAuthorityPda가 설정되어 있으면 아래 안해도됨?
           setVaultAddress(escrowTool.vaultAccountPda);
           setVaultOwner(escrowTool.vaultAuthorityPda);
+
+          const escrowAccounts = await program.account.escrowAccount.all();
+          const _escrowAccount = escrowAccounts[0].account; // only one in the Escrow Contract
+
+          setEscrowInitializerKey(_escrowAccount.initializerKey);
+          setEscrowInitializerDepositTokenAccount(
+            _escrowAccount.initializerDepositTokenAccount
+          );
+          setEscrowInitializerReceiveTokenAccount(
+            _escrowAccount.initializerReceiveTokenAccount
+          );
+          setEscrowInitializerAmount(
+            _escrowAccount.initializerAmount.toNumber()
+          );
+          setEscrowTakerAmount(_escrowAccount.takerAmount.toNumber());
         } else {
           await program.methods
             .initialize(
@@ -96,9 +118,6 @@ function InitEscrow({ escrowTool }: EscrowToolBox) {
             ])
             .rpc();
 
-          console.log("initialize finished");
-
-          // let _vault = await mintA.getAccountInfo(vault_account_pda);
           _vault = await token.getAccount(
             provider.connection,
             escrowTool.vaultAccountPda
@@ -108,22 +127,20 @@ function InitEscrow({ escrowTool }: EscrowToolBox) {
             escrowTool.escrowAccount.publicKey
           );
 
-          console.log("vault address : " + _vault.address.toString());
-          console.log(
-            "vault_account_pda : " + escrowTool.vaultAccountPda.toString()
-          );
           setVaultAddress(escrowTool.vaultAccountPda);
-          console.log("vault owner : " + _vault.owner.toString());
-          console.log("vault_authority_pda : " + escrowTool.vaultAuthorityPda);
-          assert.ok(_vault.owner.equals(escrowTool.vaultAuthorityPda));
           setVaultOwner(escrowTool.vaultAuthorityPda);
+          setEscrowInitializerKey(_escrowAccount.initializerKey);
+          setEscrowInitializerDepositTokenAccount(
+            _escrowAccount.initializerDepositTokenAccount
+          );
+          setEscrowInitializerReceiveTokenAccount(
+            _escrowAccount.initializerReceiveTokenAccount
+          );
+          setEscrowInitializerAmount(
+            _escrowAccount.initializerAmount.toNumber()
+          );
+          setEscrowTakerAmount(_escrowAccount.takerAmount.toNumber());
         }
-
-        // assert.ok(_escrowAccount.initializerKey.equals(initializerMainAccount.publicKey));
-        // assert.ok(_escrowAccount.initializerAmount.toNumber() == initializerAmount);
-        // assert.ok(_escrowAccount.takerAmount.toNumber() == takerAmount);
-        // assert.ok(_escrowAccount.initializerDepositTokenAccount.equals(initializerTokenAccountA));
-        // assert.ok(_escrowAccount.initializerReceiveTokenAccount.equals(initializerTokenAccountB));
       } else {
         alert("vault account or authority is not initialized");
       }
@@ -148,11 +165,53 @@ function InitEscrow({ escrowTool }: EscrowToolBox) {
       <span className="featuredSub">
         {vaultAddress == null ? 0 : vaultAddress.toString()}
       </span>
+
       <div className="featuredMoneyContainer">
         <span className="featuredMoney">Vault Owner</span>
       </div>
       <span className="featuredSub">
         {vaultOwner == null ? 0 : vaultOwner.toString()}
+      </span>
+
+      <div className="featuredMoneyContainer">
+        <span className="featuredMoney">InitializerKey</span>
+      </div>
+      <span className="featuredSub">
+        {escrowInitializerKey == null ? 0 : escrowInitializerKey.toString()}
+      </span>
+
+      <div className="featuredMoneyContainer">
+        <span className="featuredMoney">initializerDepositTokenAccount</span>
+      </div>
+      <span className="featuredSub">
+        {escrowInitializerDepositTokenAccount == null
+          ? 0
+          : escrowInitializerDepositTokenAccount.toString()}
+      </span>
+
+      <div className="featuredMoneyContainer">
+        <span className="featuredMoney">initializerReceiveTokenAccount</span>
+      </div>
+      <span className="featuredSub">
+        {escrowInitializerReceiveTokenAccount == null
+          ? 0
+          : escrowInitializerReceiveTokenAccount.toString()}
+      </span>
+
+      <div className="featuredMoneyContainer">
+        <span className="featuredMoney"> initializerAmount</span>
+      </div>
+      <span className="featuredSub">
+        {escrowinitializerAmount == null
+          ? 0
+          : escrowinitializerAmount.toString()}
+      </span>
+
+      <div className="featuredMoneyContainer">
+        <span className="featuredMoney">takerAmount</span>
+      </div>
+      <span className="featuredSub">
+        {escrowtakerAmount == null ? 0 : escrowtakerAmount.toString()}
       </span>
     </div>
   );
