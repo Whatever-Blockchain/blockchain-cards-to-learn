@@ -50,6 +50,8 @@ export interface EscrowTool {
   takerMainAccount: Keypair; // B 토큰 사용자
 
   escrowAccount: Keypair;
+  escrowAccountInfo: any;
+  setEscrowAccountInfo: (value: any) => void;
   mintAuthority: Keypair;
 }
 
@@ -122,6 +124,8 @@ function Escrow() {
     takerMainAccount: anchor.web3.Keypair.generate(), // B 토큰 사용자
 
     escrowAccount: anchor.web3.Keypair.generate(),
+    escrowAccountInfo: null,
+    setEscrowAccountInfo: setEscrowAccountInfo,
     mintAuthority: anchor.web3.Keypair.generate(),
   };
 
@@ -159,6 +163,10 @@ function Escrow() {
 
   function setVaultAuthorityPda(value: PublicKey) {
     escrowTool.vaultAuthorityPda = value;
+  }
+
+  function setEscrowAccountInfo(value: any) {
+    escrowTool.escrowAccountInfo = value;
   }
 
   return (
