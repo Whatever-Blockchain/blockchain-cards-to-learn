@@ -6,7 +6,6 @@ import * as token from "@solana/spl-token";
 import { Button, toolbarClasses } from "@mui/material";
 
 import { EscrowTool } from "../Escrow";
-import assert from "assert";
 
 interface EscrowToolBox {
   escrowTool: EscrowTool;
@@ -75,6 +74,7 @@ function InitEscrow({ escrowTool }: EscrowToolBox) {
 
           const escrowAccounts = await program.account.escrowAccount.all();
           const _escrowAccount = escrowAccounts[0].account; // only one in the Escrow Contract
+          escrowTool.setEscrowAccountInfo(_escrowAccount);
 
           setEscrowInitializerKey(_escrowAccount.initializerKey);
           setEscrowInitializerDepositTokenAccount(
@@ -126,6 +126,8 @@ function InitEscrow({ escrowTool }: EscrowToolBox) {
           let _escrowAccount = await program.account.escrowAccount.fetch(
             escrowTool.escrowAccount.publicKey
           );
+
+          escrowTool.setEscrowAccountInfo(_escrowAccount);
 
           setVaultAddress(escrowTool.vaultAccountPda);
           setVaultOwner(escrowTool.vaultAuthorityPda);
