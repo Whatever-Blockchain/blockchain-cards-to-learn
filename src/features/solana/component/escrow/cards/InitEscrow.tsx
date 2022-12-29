@@ -3,9 +3,10 @@ import * as anchor from "@project-serum/anchor";
 import * as web3 from "@solana/web3.js";
 import * as token from "@solana/spl-token";
 
-import { Button, toolbarClasses } from "@mui/material";
+import { Button } from "@mui/material";
 
 import { EscrowTool } from "../Escrow";
+import assert from "assert";
 
 interface EscrowToolBox {
   escrowTool: EscrowTool;
@@ -62,31 +63,36 @@ function InitEscrow({ escrowTool }: EscrowToolBox) {
         escrowTool.vaultAccountBump &&
         escrowTool.vaultAuthorityPda
       ) {
-        let _vault = await token.getAccount(
-          provider.connection,
-          escrowTool.vaultAccountPda
-        );
+        let _vault = null;
+
+        try {
+          _vault = await token.getAccount(
+            provider.connection,
+            escrowTool.vaultAccountPda
+          );
+        } catch (error) {
+          console.log(error);
+        }
 
         if (_vault && _vault.owner.equals(escrowTool.vaultAuthorityPda)) {
-          // vault가 이미 존재하고 owner로 vaultAuthorityPda가 설정되어 있으면 아래 안해도됨?
           setVaultAddress(escrowTool.vaultAccountPda);
           setVaultOwner(escrowTool.vaultAuthorityPda);
 
           const escrowAccounts = await program.account.escrowAccount.all();
-          const _escrowAccount = escrowAccounts[0].account; // only one in the Escrow Contract
+          const _escrowAccount = escrowAccounts[0]; // only one in the Escrow Contract
           escrowTool.setEscrowAccountInfo(_escrowAccount);
 
-          setEscrowInitializerKey(_escrowAccount.initializerKey);
+          setEscrowInitializerKey(_escrowAccount.account.initializerKey);
           setEscrowInitializerDepositTokenAccount(
-            _escrowAccount.initializerDepositTokenAccount
+            _escrowAccount.account.initializerDepositTokenAccount
           );
           setEscrowInitializerReceiveTokenAccount(
-            _escrowAccount.initializerReceiveTokenAccount
+            _escrowAccount.account.initializerReceiveTokenAccount
           );
           setEscrowInitializerAmount(
-            _escrowAccount.initializerAmount.toNumber()
+            _escrowAccount.account.initializerAmount.toNumber()
           );
-          setEscrowTakerAmount(_escrowAccount.takerAmount.toNumber());
+          setEscrowTakerAmount(_escrowAccount.account.takerAmount.toNumber());
         } else {
           await program.methods
             .initialize(
@@ -123,26 +129,30 @@ function InitEscrow({ escrowTool }: EscrowToolBox) {
             escrowTool.vaultAccountPda
           );
 
-          let _escrowAccount = await program.account.escrowAccount.fetch(
-            escrowTool.escrowAccount.publicKey
-          );
+          // let _escrowAccount = await program.account.escrowAccount.fetch(
+          //   escrowTool.escrowAccount.publicKey
+          // );
+          const escrowAccounts = await program.account.escrowAccount.all();
+          const _escrowAccount = escrowAccounts[0];
 
           escrowTool.setEscrowAccountInfo(_escrowAccount);
 
           setVaultAddress(escrowTool.vaultAccountPda);
           setVaultOwner(escrowTool.vaultAuthorityPda);
-          setEscrowInitializerKey(_escrowAccount.initializerKey);
+          setEscrowInitializerKey(_escrowAccount.account.initializerKey);
           setEscrowInitializerDepositTokenAccount(
-            _escrowAccount.initializerDepositTokenAccount
+            _escrowAccount.account.initializerDepositTokenAccount
           );
           setEscrowInitializerReceiveTokenAccount(
-            _escrowAccount.initializerReceiveTokenAccount
+            _escrowAccount.account.initializerReceiveTokenAccount
           );
           setEscrowInitializerAmount(
-            _escrowAccount.initializerAmount.toNumber()
+            _escrowAccount.account.initializerAmount.toNumber()
           );
-          setEscrowTakerAmount(_escrowAccount.takerAmount.toNumber());
+          setEscrowTakerAmount(_escrowAccount.account.takerAmount.toNumber());
         }
+
+        // await exchangeEscrow();
       } else {
         alert("vault account or authority is not initialized");
       }
@@ -153,7 +163,7 @@ function InitEscrow({ escrowTool }: EscrowToolBox) {
 
   return (
     <div className="featuredItem">
-      <span className="featuredTitle">[ B. Init Escrow ] 1. Init Escrow </span>
+      <span className="featuredTitle">[ B. Escrow ] 1. Init Escrow </span>
       <Button
         style={{ float: "right", marginRight: "0px" }}
         variant="contained"

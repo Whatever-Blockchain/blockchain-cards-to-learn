@@ -36,77 +36,106 @@ function InitMint({ escrowTool }: EscrowToolBox) {
       provider.connection
     );
     const programId = token.TOKEN_PROGRAM_ID;
+    const program = escrowTool.program;
 
-    // MintA
-    const mintAKeypair = web3.Keypair.generate();
-    const transactionMintA = new Transaction();
-    transactionMintA.add(
-      SystemProgram.createAccount({
-        fromPubkey: payer.publicKey,
-        newAccountPubkey: mintAKeypair.publicKey,
-        space: token.MINT_SIZE,
-        lamports: lamportsForMint,
-        programId,
-      }),
-      token.createInitializeMintInstruction(
-        mintAKeypair.publicKey,
-        0,
-        escrowTool.mintAuthority.publicKey,
-        null,
-        programId
-      )
-    );
-    transactionMintA.feePayer = payer.publicKey;
-    transactionMintA.recentBlockhash = await (
-      await connection.getLatestBlockhash()
-    ).blockhash;
-    transactionMintA.sign(mintAKeypair); // mintA의 keypair도 필요하다
+    // let mintAPubkey = null;
+    // let mintBPubkey = null;
 
-    const signatureMintA = await provider.wallet.signTransaction(
-      transactionMintA
-    );
-    const serializedTransactionMintA = signatureMintA.serialize();
+    const escrowAccounts = await program.account.escrowAccount.all();
+    if (escrowAccounts.length > 0 && escrowAccounts[0]) {
+      escrowTool.setEscrowAccountInfo(escrowAccounts[0]);
 
-    await provider.connection.sendRawTransaction(serializedTransactionMintA);
+      const initializerDepositTokenAccountInfo = await token.getAccount(
+        provider.connection,
+        escrowTool.escrowAccountInfo.account.initializerDepositTokenAccount
+      );
+      const mintAPubkey = initializerDepositTokenAccountInfo.mint;
 
-    setMintAPubkey(mintAKeypair.publicKey);
-    escrowTool.setMintA(mintAKeypair.publicKey);
+      const initializerReceiveTokenAccountInfo = await token.getAccount(
+        provider.connection,
+        escrowTool.escrowAccountInfo.account.initializerReceiveTokenAccount
+      );
+      const mintBPubkey = initializerReceiveTokenAccountInfo.mint;
 
-    // MintB
-    const mintBKeypair = web3.Keypair.generate();
-    console.log("mintB pubkey : " + mintBKeypair.publicKey);
-    const transactionMintB = new Transaction();
-    transactionMintB.add(
-      SystemProgram.createAccount({
-        fromPubkey: payer.publicKey,
-        newAccountPubkey: mintBKeypair.publicKey,
-        space: token.MINT_SIZE,
-        lamports: lamportsForMint,
-        programId,
-      }),
-      token.createInitializeMintInstruction(
-        mintBKeypair.publicKey,
-        0,
-        escrowTool.mintAuthority.publicKey,
-        null,
-        programId
-      )
-    );
-    transactionMintB.feePayer = payer.publicKey;
-    transactionMintB.recentBlockhash = await (
-      await connection.getLatestBlockhash()
-    ).blockhash;
-    transactionMintB.sign(mintBKeypair); // mintA의 keypair도 필요하다
+      setMintAPubkey(mintAPubkey);
+      escrowTool.setMintA(mintAPubkey);
 
-    const signatureMintB = await provider.wallet.signTransaction(
-      transactionMintB
-    );
-    const serializedTransactionMintB = signatureMintB.serialize();
+      setMintBPubkey(mintBPubkey);
+      escrowTool.setMintB(mintBPubkey);
+    } else {
+      const mintAKeypair = web3.Keypair.generate();
+      const mintBKeypair = web3.Keypair.generate();
 
-    await provider.connection.sendRawTransaction(serializedTransactionMintB);
+      // MintA
+      const transactionMintA = new Transaction();
+      transactionMintA.add(
+        SystemProgram.createAccount({
+          fromPubkey: payer.publicKey,
+          newAccountPubkey: mintAKeypair.publicKey,
+          space: token.MINT_SIZE,
+          lamports: lamportsForMint,
+          programId,
+        }),
+        token.createInitializeMintInstruction(
+          mintAKeypair.publicKey,
+          0,
+          // escrowTool.mintAuthority.publicKey,
+          provider.wallet.publicKey,
+          null,
+          programId
+        )
+      );
+      transactionMintA.feePayer = payer.publicKey;
+      transactionMintA.recentBlockhash = await (
+        await connection.getLatestBlockhash()
+      ).blockhash;
+      transactionMintA.sign(mintAKeypair); // mintA의 keypair도 필요하다
 
-    setMintBPubkey(mintBKeypair.publicKey);
-    escrowTool.setMintB(mintBKeypair.publicKey);
+      const signatureMintA = await provider.wallet.signTransaction(
+        transactionMintA
+      );
+      const serializedTransactionMintA = signatureMintA.serialize();
+
+      await provider.connection.sendRawTransaction(serializedTransactionMintA);
+
+      setMintAPubkey(mintAKeypair.publicKey);
+      escrowTool.setMintA(mintAKeypair.publicKey);
+
+      // MintB
+      const transactionMintB = new Transaction();
+      transactionMintB.add(
+        SystemProgram.createAccount({
+          fromPubkey: payer.publicKey,
+          newAccountPubkey: mintBKeypair.publicKey,
+          space: token.MINT_SIZE,
+          lamports: lamportsForMint,
+          programId,
+        }),
+        token.createInitializeMintInstruction(
+          mintBKeypair.publicKey,
+          0,
+          // escrowTool.mintAuthority.publicKey,
+          provider.wallet.publicKey,
+          null,
+          programId
+        )
+      );
+      transactionMintB.feePayer = payer.publicKey;
+      transactionMintB.recentBlockhash = await (
+        await connection.getLatestBlockhash()
+      ).blockhash;
+      transactionMintB.sign(mintBKeypair); // mintA의 keypair도 필요하다
+
+      const signatureMintB = await provider.wallet.signTransaction(
+        transactionMintB
+      );
+      const serializedTransactionMintB = signatureMintB.serialize();
+
+      await provider.connection.sendRawTransaction(serializedTransactionMintB);
+
+      setMintBPubkey(mintBKeypair.publicKey);
+      escrowTool.setMintB(mintBKeypair.publicKey);
+    }
   }
 
   return (

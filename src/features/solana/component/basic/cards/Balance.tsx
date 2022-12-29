@@ -49,8 +49,6 @@ function Balance() {
       LAMPORTS_PER_SOL * 100
     );
 
-    console.log(`txhash: ${airdropSignature}`);
-
     updatePayerBalance();
   }
 

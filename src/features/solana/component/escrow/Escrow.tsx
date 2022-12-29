@@ -19,6 +19,8 @@ import {
 } from "@solana/spl-token";
 import InitMintTo from "./cards/InitMintTo";
 import InitEscrow from "./cards/InitEscrow";
+import ExchangeEscrow from "./cards/ExchangeEscrow";
+import CancelEscrow from "./cards/CancelEscrow";
 
 const programID = new PublicKey(idl.metadata.address);
 
@@ -176,6 +178,8 @@ function Escrow() {
       <InitTokenAccounts escrowTool={escrowTool} />
       <InitMintTo escrowTool={escrowTool} />
       <InitEscrow escrowTool={escrowTool} />
+      <ExchangeEscrow escrowTool={escrowTool} />
+      <CancelEscrow escrowTool={escrowTool} />
     </div>
   );
 }

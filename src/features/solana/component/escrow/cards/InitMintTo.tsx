@@ -40,14 +40,36 @@ function InitMintTo({ escrowTool }: EscrowToolBox) {
       escrowTool.mintB &&
       escrowTool.takerTokenAccountB
     ) {
-      await token.mintTo(
-        provider.connection,
-        escrowTool.initializerMainAccount,
-        escrowTool.mintA,
-        escrowTool.initializerTokenAccountA,
-        escrowTool.mintAuthority, // pubkey 로 하니까 error 남.
-        initializerAmout
+      // mint A to InitializerTokenAccount A
+      // await token.mintTo(
+      //   provider.connection,
+      //   escrowTool.initializerMainAccount,
+      //   escrowTool.mintA,
+      //   escrowTool.initializerTokenAccountA,
+      //   escrowTool.mintAuthority, // pubkey 로 하니까 error 남.
+      //   initializerAmout
+      // );
+
+      const initializerMintATransaction = new web3.Transaction();
+      initializerMintATransaction.add(
+        token.createMintToInstruction(
+          escrowTool.mintA,
+          escrowTool.initializerTokenAccountA,
+          provider.wallet.publicKey,
+          initializerAmout
+        )
       );
+      initializerMintATransaction.feePayer = payer.publicKey;
+      initializerMintATransaction.recentBlockhash = await (
+        await provider.connection.getLatestBlockhash()
+      ).blockhash;
+
+      const signatureMintA = await provider.wallet.signTransaction(
+        initializerMintATransaction
+      );
+      const serializedTransactionMintA = signatureMintA.serialize();
+
+      await provider.connection.sendRawTransaction(serializedTransactionMintA);
 
       const initializerATokenAmount =
         await provider.connection.getTokenAccountBalance(
@@ -55,14 +77,27 @@ function InitMintTo({ escrowTool }: EscrowToolBox) {
         );
       setInitializerTokenAccountABalance(initializerATokenAmount.value);
 
-      await token.mintTo(
-        provider.connection,
-        escrowTool.takerMainAccount,
-        escrowTool.mintB,
-        escrowTool.takerTokenAccountB,
-        escrowTool.mintAuthority, // pubkey 로 하니까 error 남.
-        takerAmout
+      // mint B to TakerTokenAccount B
+      const initializerMintBTransaction = new web3.Transaction();
+      initializerMintBTransaction.add(
+        token.createMintToInstruction(
+          escrowTool.mintB,
+          escrowTool.takerTokenAccountB,
+          provider.wallet.publicKey,
+          takerAmout
+        )
       );
+      initializerMintBTransaction.feePayer = payer.publicKey;
+      initializerMintBTransaction.recentBlockhash = await (
+        await provider.connection.getLatestBlockhash()
+      ).blockhash;
+
+      const signatureMintB = await provider.wallet.signTransaction(
+        initializerMintBTransaction
+      );
+      const serializedTransactionMintB = signatureMintB.serialize();
+
+      await provider.connection.sendRawTransaction(serializedTransactionMintB);
 
       const takerBTokenAmount =
         await provider.connection.getTokenAccountBalance(
@@ -101,7 +136,7 @@ function InitMintTo({ escrowTool }: EscrowToolBox) {
       </span>
       <div className="featuredContentContainer">
         <span className="featuredContent">
-          Balance of Initializer Token Account B :{" "}
+          Balance of Taker Token Account B :{" "}
           {takerTokenAccountBBalance == null
             ? 0
             : takerTokenAccountBBalance.amount}
