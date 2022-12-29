@@ -39,9 +39,6 @@ function AccountDetail() {
       const pubkey = new PublicKey(accountPubKey);
       let accountInfo = await connection.getAccountInfo(pubkey, "confirmed");
 
-      console.log(accountInfo);
-      console.log(accountInfo?.data.byteLength);
-
       setAccountInfo(accountInfo);
     }
   }

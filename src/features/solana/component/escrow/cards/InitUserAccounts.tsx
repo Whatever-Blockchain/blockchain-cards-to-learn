@@ -19,8 +19,6 @@ function InitUserAccounts({ escrowTool }: EscrowToolBox) {
   const provider = escrowTool.provider;
   const program = escrowTool.program;
 
-  console.log("payer" + payer.publicKey.toString());
-
   if (!escrowTool.initializerMainAccount || !escrowTool.takerMainAccount) {
     return (
       <Grid container spacing={1} alignItems="center" direction="column">
@@ -55,7 +53,6 @@ function InitUserAccounts({ escrowTool }: EscrowToolBox) {
     ).blockhash;
 
     const signature = await provider.wallet.signTransaction(transaction);
-    console.log(signature);
     const serializedTransaction = signature.serialize();
     await provider.connection.sendRawTransaction(serializedTransaction);
 

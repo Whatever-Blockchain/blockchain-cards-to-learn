@@ -26,8 +26,6 @@ function InitTokenAccounts({ escrowTool }: EscrowToolBox) {
   const provider = escrowTool.provider;
   const program = escrowTool.program;
 
-  console.log("payer" + payer.publicKey.toString());
-
   if (!escrowTool.initializerMainAccount || !escrowTool.takerMainAccount) {
     return (
       <Grid container spacing={1} alignItems="center" direction="column">
@@ -85,13 +83,6 @@ function InitTokenAccounts({ escrowTool }: EscrowToolBox) {
         escrowTool.initializerMainAccount,
         initializerTokenAccountA
       );
-
-      // console.log(escrowTool.initializerMainAccount.publicKey.toString());
-      // console.log(initializerTokenAccountA.publicKey.toString());
-
-      // console.log(transactionTokenAccountA);
-      // console.log(transactionTokenAccountA.instructions[0].keys[0].pubkey.toString())
-      // console.log(transactionTokenAccountA.instructions[0].keys[1].pubkey.toString())
 
       const signatureInitializerTokenAccountA =
         transactionTokenAccountA.serialize();
