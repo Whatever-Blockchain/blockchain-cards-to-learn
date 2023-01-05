@@ -50,7 +50,9 @@ function CancelEscrow({ escrowTool }: EscrowToolBox) {
       escrowTool.takerTokenAccountB &&
       escrowTool.escrowAccountInfo
     ) {
-      console.log(escrowTool.escrowAccountInfo.account.initializerKey.toString());
+      console.log(
+        escrowTool.escrowAccountInfo.account.initializerKey.toString()
+      );
 
       await program.methods
         .cancel()
@@ -64,7 +66,6 @@ function CancelEscrow({ escrowTool }: EscrowToolBox) {
           tokenProgram: token.TOKEN_PROGRAM_ID,
         })
         .rpc();
-
 
       let _takerTokenAccountA = await token.getAccount(
         provider.connection,
@@ -87,14 +88,12 @@ function CancelEscrow({ escrowTool }: EscrowToolBox) {
       setInitializerTokenBAmount(Number(_initializerTokenAccountB.amount));
       setTakerTokenAAmount(Number(_takerTokenAccountA.amount));
       setTakerTokenBAmount(Number(_takerTokenAccountB.amount));
-      
+
       // assert.ok(
       //   _initializerTokenAccountA.owner.equals(
       //     escrowTool.initializerMainAccount.publicKey
       //   )
       // );
-
-
     }
   }
 
