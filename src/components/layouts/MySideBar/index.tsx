@@ -22,7 +22,9 @@ function SideBar() {
       url: "/solana",
       subMenu: [
         { id: 11, active: false, label: "Basic", url: "/solana/basic" },
-        { id: 12, active: false, label: "Escrow", url: "/solana/escrow" },
+        { id: 12, active: false, label: "Hello", url: "/solana/hello" },
+        { id: 12, active: false, label: "Counter", url: "/solana/counter" },
+        { id: 13, active: false, label: "Escrow", url: "/solana/escrow" },
       ],
     },
     { id: 2, active: false, label: "CosmWasm", url: "/cosmwasm" },
@@ -45,10 +47,7 @@ function SideBar() {
           <SidebarList>
             {menu.map((menuElement, index) => (
               <NavLink to={menuElement.url!}>
-                <SidebarListItem
-                  className={menuElement.active ? "active" : ""}
-                  onClick={() => onClickMenu(menuElement.id)}
-                >
+                <SidebarListItem className={menuElement.active ? "active" : ""}>
                   {menuElement.label}
                 </SidebarListItem>
                 {menuElement.subMenu?.map((subMenu, index) => (
