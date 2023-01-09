@@ -32,6 +32,7 @@ export const SidebarListItem = styled.li`
   border-radius: 10px;
 
   &:active {
+    background-color: rgb(212, 209, 235);
   }
 
   &:hover {
@@ -48,6 +49,7 @@ export const SidebarSubListItem = styled.li`
   border-radius: 10px;
 
   &:active {
+    background-color: rgb(212, 209, 235);
   }
 
   &:hover {
