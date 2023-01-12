@@ -1,4 +1,23 @@
 # Blockchain Cards to learn
 
-This is react dapp to learn web3 and smart-contract using serveral smart-contract.
-Cards in dashboard will show each feature's result.
+React, Typescrpt dapp to learn how to communicate with smart-contracts in several blockchains. Source codes of contraccts are managed in other [repos](https://github.com/orgs/Whatever-Blockchain/repositories) in this oraganization.
+
+you can see the result of each card by clicking the `button`.
+`Card` means a component that contains some functions to communicate with each blockchain's remote rpc node, although default network is localhost in this dapp.
+
+## Usage
+
+Because the default network setting is localhost, you need to run local network of each blockchain and
+deploy contracts in other [repos](https://github.com/orgs/Whatever-Blockchain/repositories) to each blockchain's local network.
+
+## Features
+
+- solana ( user wallet : phantom )
+  - basic
+  - counter contract
+  - escrow contract
+- cosmwasm
+
+## Contribution
+
+Contributions are very welcome.
