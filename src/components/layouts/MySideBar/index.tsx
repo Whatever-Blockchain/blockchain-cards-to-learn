@@ -22,7 +22,6 @@ function SideBar() {
       url: "/solana",
       subMenu: [
         { id: 11, active: false, label: "Basic", url: "/solana/basic" },
-        { id: 12, active: false, label: "Hello", url: "/solana/hello" },
         { id: 12, active: false, label: "Counter", url: "/solana/counter" },
         { id: 13, active: false, label: "Escrow", url: "/solana/escrow" },
       ],
