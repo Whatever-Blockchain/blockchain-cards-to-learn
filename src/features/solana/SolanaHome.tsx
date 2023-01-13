@@ -12,6 +12,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Escrow from "./component/escrow/Escrow";
 
 import type { Menu } from "./SolanaBoard";
+import Counter from "./component/counter/Counter";
 
 function SolanaHome({ name }: Menu) {
   let isWalletConnected = false;
@@ -28,6 +29,7 @@ function SolanaHome({ name }: Menu) {
   };
   const Components: compType = {
     basic: <BasicInfo />,
+    counter: <Counter />,
     escrow: <Escrow />,
   };
 

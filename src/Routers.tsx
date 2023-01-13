@@ -7,6 +7,7 @@ function DynamicRouter() {
   const routerData: RouteObject[] = [
     { path: "/solana", element: <SolanaBoard name="basic" /> },
     { path: "/solana/basic", element: <SolanaBoard name="basic" /> },
+    { path: "/solana/counter", element: <SolanaBoard name="counter" /> },
     { path: "/solana/escrow", element: <SolanaBoard name="escrow" /> },
     { path: "/cosmwasm", element: <CosmWasmBoard /> },
   ];
