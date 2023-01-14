@@ -1,22 +1,46 @@
-import React, { FC, useMemo, useState } from "react";
-import { AnchorProvider, Provider } from "@project-serum/anchor";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { Connection, LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { styled } from "@mui/material/styles";
-import { Paper, Button, TextField, Container, Box, Grid } from "@mui/material";
+import React, { useState } from "react";
+import * as anchor from "@project-serum/anchor";
+import { AnchorProvider, Program } from "@project-serum/anchor";
+import { PublicKey } from "@solana/web3.js";
 
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import { IDL, Counter } from "../idl/counter";
+import idl from "../idl/idl.json";
+
+import { Button } from "@mui/material";
+
+const programID = new PublicKey(idl.metadata.address);
 
 interface AnchorProviderBox {
   getProvider: () => Promise<AnchorProvider>;
 }
 
 function Initialize({ getProvider }: AnchorProviderBox) {
-  const [balance, setBalance] = useState<number>();
+  const [counterAccountPubkey, setCounterAccountPubkey] = useState<PublicKey>();
+  const [counterValue, setCounterValue] = useState<Number>();
 
   async function initialize() {
-    const provider = getProvider();
+    const provider = await getProvider();
+    const program = new Program<Counter>(IDL, programID, provider);
+
+    const counterAccountKeypair = anchor.web3.Keypair.generate();
+
+    await program.methods
+      .initialize()
+      .accounts({
+        counterAccount: counterAccountKeypair.publicKey,
+        user: provider.wallet.publicKey,
+        systemProgram: anchor.web3.SystemProgram.programId,
+      })
+      .signers([counterAccountKeypair])
+      .rpc();
+
+    setCounterAccountPubkey(counterAccountKeypair.publicKey);
+
+    const counterAccount = await program.account.counterAccount.fetch(
+      counterAccountKeypair.publicKey
+    );
+
+    setCounterValue(counterAccount.count.toNumber());
   }
 
   return (
@@ -32,11 +56,13 @@ function Initialize({ getProvider }: AnchorProviderBox) {
         button
       </Button>
       <div className="featuredContentContainer">
-        <span className="featuredContent">Initial Counter Value</span>
+        <span className="featuredContent">
+          Initial Counter Value :{" "}
+          {counterValue == null ? "-" : counterValue.toString()}
+        </span>
       </div>
       <span className="featuredSubContent">
-        {/* {mintAPubkey == null ? "Not Initialized" : mintAPubkey.toString()} */}
-        -
+        {counterAccountPubkey == null ? "-" : counterAccountPubkey.toString()}
       </span>
     </div>
   );
