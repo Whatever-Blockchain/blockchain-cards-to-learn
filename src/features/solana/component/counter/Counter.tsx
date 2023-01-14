@@ -1,9 +1,21 @@
 import Grid from "@mui/material/Grid";
-import { AnchorProvider } from "@project-serum/anchor";
+import { AnchorProvider, Program } from "@project-serum/anchor";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { Connection } from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
 import React from "react";
 import Initialize from "./cards/Initialize";
+
+import { IDL, Counter as CounterContract } from "./idl/counter";
+import idl from "./idl/idl.json";
+
+const programID = new PublicKey(idl.metadata.address);
+
+export interface CounterTool {
+  provider: AnchorProvider,
+  program: Program<CounterContract>,
+  counterAccounterPubkey: PublicKey | null,
+  setCounterAccounterPubkey: (value: PublicKey) => void,
+}
 
 function Counter() {
   const { publicKey, wallet, signTransaction, signAllTransactions } =
@@ -24,20 +36,29 @@ function Counter() {
     signAllTransactions: signAllTransactions,
   };
 
-  async function getProvider() {
-    const network = "http://127.0.0.1:8899";
-    const connection = new Connection(network, "processed");
+  const network = "http://127.0.0.1:8899";
+  const connection = new Connection(network, "processed");
 
-    const provider = new AnchorProvider(connection, signerWallet, {
-      preflightCommitment: "processed",
-    });
+  const provider = new AnchorProvider(connection, signerWallet, {
+    preflightCommitment: "processed",
+  });
 
-    return provider;
+  const program = new Program<CounterContract>(IDL, programID, provider);
+
+  const counterTool: CounterTool = {
+    provider: provider,
+    program: program,
+    counterAccounterPubkey: null,
+    setCounterAccounterPubkey: setCounterAccounterPubkey,
+  };
+
+  function setCounterAccounterPubkey(value: PublicKey) {
+    counterTool.counterAccounterPubkey = value;
   }
 
   return (
     <div className="featured">
-      <Initialize getProvider={getProvider} />
+      <Initialize counterTool={counterTool} />
     </div>
   );
 }
