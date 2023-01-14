@@ -3,58 +3,60 @@ import * as anchor from "@project-serum/anchor";
 import { AnchorProvider, Program } from "@project-serum/anchor";
 import { PublicKey } from "@solana/web3.js";
 
+import { IDL, Counter } from "../idl/counter";
+import idl from "../idl/idl.json";
+
 import { Button } from "@mui/material";
 import { CounterTool } from "../Counter";
+
+const programID = new PublicKey(idl.metadata.address);
 
 interface CounterToolBox {
   counterTool: CounterTool;
 }
 
-function Initialize({ counterTool }: CounterToolBox) {
+function Increment({ counterTool }: CounterToolBox) {
   const [counterAccountPubkey, setCounterAccountPubkey] = useState<PublicKey>();
   const [counterValue, setCounterValue] = useState<Number>();
 
-  async function initialize() {
+  async function increment() {
     const provider = counterTool.provider;
     const program = counterTool.program;
 
-    const counterAccountKeypair = anchor.web3.Keypair.generate();
+    if (counterTool.counterAccounterPubkey != null) {
+      setCounterAccountPubkey(counterTool.counterAccounterPubkey);
 
-    await program.methods
-      .initialize()
-      .accounts({
-        counterAccount: counterAccountKeypair.publicKey,
-        user: provider.wallet.publicKey,
-        systemProgram: anchor.web3.SystemProgram.programId,
-      })
-      .signers([counterAccountKeypair])
-      .rpc();
+      await program.methods
+        .increment()
+        .accounts({
+          counterAccount: counterTool.counterAccounterPubkey,
+        })
+        .rpc();
 
-    setCounterAccountPubkey(counterAccountKeypair.publicKey);
-    counterTool.setCounterAccounterPubkey(counterAccountKeypair.publicKey);
-
-    const counterAccount = await program.account.counterAccount.fetch(
-      counterAccountKeypair.publicKey
-    );
-
-    setCounterValue(counterAccount.count.toNumber());
+      const counterAccount = await program.account.counterAccount.fetch(
+        counterTool.counterAccounterPubkey
+      );
+      setCounterValue(counterAccount.count.toNumber());
+    } else {
+      alert("Counter Account is not initialized!");
+    }
   }
 
   return (
     <div className="featuredItem">
       <span className="featuredTitle">
-        [ A. Counter Contract ] 1. Initialize Counter{" "}
+        [ A. Counter Contract ] 2. Increment Count{" "}
       </span>
       <Button
         style={{ float: "right", marginRight: "0px" }}
         variant="contained"
-        onClick={initialize}
+        onClick={increment}
       >
         button
       </Button>
       <div className="featuredContentContainer">
         <span className="featuredContent">
-          Initial Counter Value :{" "}
+          incremented Counter Value :{" "}
           {counterValue == null ? "-" : counterValue.toString()}
         </span>
       </div>
@@ -65,4 +67,4 @@ function Initialize({ counterTool }: CounterToolBox) {
   );
 }
 
-export default Initialize;
+export default Increment;

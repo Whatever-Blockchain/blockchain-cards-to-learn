@@ -3,6 +3,7 @@ import { AnchorProvider, Program } from "@project-serum/anchor";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Connection, PublicKey } from "@solana/web3.js";
 import React from "react";
+import Increment from "./cards/Increment";
 import Initialize from "./cards/Initialize";
 
 import { IDL, Counter as CounterContract } from "./idl/counter";
@@ -11,10 +12,10 @@ import idl from "./idl/idl.json";
 const programID = new PublicKey(idl.metadata.address);
 
 export interface CounterTool {
-  provider: AnchorProvider,
-  program: Program<CounterContract>,
-  counterAccounterPubkey: PublicKey | null,
-  setCounterAccounterPubkey: (value: PublicKey) => void,
+  provider: AnchorProvider;
+  program: Program<CounterContract>;
+  counterAccounterPubkey: PublicKey | null;
+  setCounterAccounterPubkey: (value: PublicKey) => void;
 }
 
 function Counter() {
@@ -59,6 +60,7 @@ function Counter() {
   return (
     <div className="featured">
       <Initialize counterTool={counterTool} />
+      <Increment counterTool={counterTool} />
     </div>
   );
 }
