@@ -11,7 +11,7 @@ interface AnchorProviderBox {
 }
 
 interface CounterToolBox {
-  counterTool: CounterTool,
+  counterTool: CounterTool;
 }
 
 function Initialize({ counterTool }: CounterToolBox) {

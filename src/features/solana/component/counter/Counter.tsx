@@ -11,10 +11,10 @@ import idl from "./idl/idl.json";
 const programID = new PublicKey(idl.metadata.address);
 
 export interface CounterTool {
-  provider: AnchorProvider,
-  program: Program<CounterContract>,
-  counterAccounterPubkey: PublicKey | null,
-  setCounterAccounterPubkey: (value: PublicKey) => void,
+  provider: AnchorProvider;
+  program: Program<CounterContract>;
+  counterAccounterPubkey: PublicKey | null;
+  setCounterAccounterPubkey: (value: PublicKey) => void;
 }
 
 function Counter() {
