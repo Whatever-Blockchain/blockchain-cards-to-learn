@@ -19,14 +19,14 @@ const TopBar = () => {
         <TopLeft>
           <Logo>Blockchain Cards to learn</Logo>
         </TopLeft>
-        <TopRight>
+        {/* <TopRight>
           <TopbarIconContainer>
             <WifiIcon />
           </TopbarIconContainer>
           <TopbarIconContainer>
             <WifiOffIcon />
           </TopbarIconContainer>
-        </TopRight>
+        </TopRight> */}
       </TopBarWrapper>
     </Container>
   );
