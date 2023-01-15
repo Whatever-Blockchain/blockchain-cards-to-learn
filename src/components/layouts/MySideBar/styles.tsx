@@ -30,23 +30,23 @@ export const SidebarListItem = styled.li`
   display: flex;
   align-items: center;
   border-radius: 10px;
-
-  &:active {
-    background-color: rgb(212, 209, 235);
-  }
-
-  &:hover {
-    background-color: rgb(212, 209, 235);
-  }
 `;
 
-export const SidebarSubListItem = styled.li`
+export const SidebarSubListItem = styled.li<{ active: boolean }>`
   padding: 5px;
   padding-left: 25px;
   cursor: pointer;
   display: flex;
   align-items: center;
   border-radius: 10px;
+
+  background-color: ${({ active }) => {
+    if (active) {
+      return "rgb(212, 209, 235)";
+    } else {
+      return "#eee";
+    }
+  }};
 
   &:active {
     background-color: rgb(212, 209, 235);

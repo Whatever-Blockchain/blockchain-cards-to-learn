@@ -3,7 +3,7 @@ import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { Drawer } from "@mui/material";
-import { NavLink, Router } from "react-router-dom";
+import { Link, NavLink, Router, useNavigate } from "react-router-dom";
 import {
   Container,
   SidebarList,
@@ -14,6 +14,7 @@ import {
 } from "./styles";
 
 function SideBar() {
+  const navigate = useNavigate();
   const [menu, setMenu] = useState([
     {
       id: 1,
@@ -30,13 +31,18 @@ function SideBar() {
     { id: 3, active: false, label: "Ethereum", url: "/ethereum" },
   ]);
 
-  const onClickMenu = (id: Number) => {
+  const onClickMenu = (id: Number, url: string) => {
     setMenu((oldMenu) =>
       oldMenu.map((menuElement) => ({
         ...menuElement,
-        active: menuElement.id == id,
+        subMenu: menuElement.subMenu?.map((subMenu) => ({
+          ...subMenu,
+          active: subMenu.id == id,
+        })),
       }))
     );
+
+    navigate(url);
   };
 
   return (
@@ -45,21 +51,17 @@ function SideBar() {
         <SidebarMenu>
           <SidebarList>
             {menu.map((menuElement, index) => (
-              <NavLink to={menuElement.url!}>
-                <SidebarListItem className={menuElement.active ? "active" : ""}>
-                  {menuElement.label}
-                </SidebarListItem>
+              <div>
+                <SidebarListItem>{menuElement.label}</SidebarListItem>
                 {menuElement.subMenu?.map((subMenu, index) => (
-                  <NavLink to={subMenu.url!}>
-                    <SidebarSubListItem
-                      className={subMenu.active ? "active" : ""}
-                      onClick={() => onClickMenu(subMenu.id)}
-                    >
-                      {subMenu.label}
-                    </SidebarSubListItem>
-                  </NavLink>
+                  <SidebarSubListItem
+                    active={subMenu.active}
+                    onClick={() => onClickMenu(subMenu.id, subMenu.url)}
+                  >
+                    {subMenu.label}
+                  </SidebarSubListItem>
                 ))}
-              </NavLink>
+              </div>
             ))}
           </SidebarList>
         </SidebarMenu>
